@@ -13,6 +13,9 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
       - name: Verify and publish signed APK
         shell: bash
         run: |
@@ -21,12 +24,6 @@ jobs:
             echo 'Release v1.9 is already published.'
             exit 0
           fi
-          for asset in Ploshchadka-SPB-1.9.apk Ploshchadka-SPB-1.9-Android.zip; do
-            gh api -H 'Accept: application/vnd.github.raw+json' \
-              "repos/$GH_REPO/contents/release/$asset?ref=$GITHUB_SHA" > "$asset"
-          done
-          printf '%s\n' 'd9054db06d7170b12867ab013a94e63290d54547017e54ab9565e7fc5553264c  Ploshchadka-SPB-1.9.apk' '605ba6517f3385d19bc24a5b483fe5ba5d5dccb3dab7586f9098266a5300670a  Ploshchadka-SPB-1.9-Android.zip' | sha256sum -c
-          gh api -H 'Accept: application/vnd.github.raw+json' \
-            "repos/$GH_REPO/contents/RELEASE_NOTES.md?ref=$GITHUB_SHA" > release-notes.md
-          gh release create v1.9 "Ploshchadka-SPB-1.9.apk" "Ploshchadka-SPB-1.9-Android.zip" \
-            --target "$GITHUB_SHA" --title "Площадка СПб 1.9" --notes-file release-notes.md
+          printf '%s\n' 'd9054db06d7170b12867ab013a94e63290d54547017e54ab9565e7fc5553264c  release/Ploshchadka-SPB-1.9.apk' '605ba6517f3385d19bc24a5b483fe5ba5d5dccb3dab7586f9098266a5300670a  release/Ploshchadka-SPB-1.9-Android.zip' | sha256sum -c
+          gh release create v1.9 "release/Ploshchadka-SPB-1.9.apk" "release/Ploshchadka-SPB-1.9-Android.zip" \
+            --target "$GITHUB_SHA" --title "Площадка СПб 1.9" --notes-file RELEASE_NOTES.md
