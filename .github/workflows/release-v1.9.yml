@@ -1,0 +1,32 @@
+name: Publish Android v1.9
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release-v1.9.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Verify and publish signed APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view v1.9 >/dev/null 2>&1; then
+            echo 'Release v1.9 is already published.'
+            exit 0
+          fi
+          for asset in Ploshchadka-SPB-1.9.apk Ploshchadka-SPB-1.9-Android.zip; do
+            gh api -H 'Accept: application/vnd.github.raw+json' \
+              "repos/$GH_REPO/contents/release/$asset?ref=$GITHUB_SHA" > "$asset"
+          done
+          printf '%s\n' 'd9054db06d7170b12867ab013a94e63290d54547017e54ab9565e7fc5553264c  Ploshchadka-SPB-1.9.apk' '605ba6517f3385d19bc24a5b483fe5ba5d5dccb3dab7586f9098266a5300670a  Ploshchadka-SPB-1.9-Android.zip' | sha256sum -c
+          gh api -H 'Accept: application/vnd.github.raw+json' \
+            "repos/$GH_REPO/contents/RELEASE_NOTES.md?ref=$GITHUB_SHA" > release-notes.md
+          gh release create v1.9 "Ploshchadka-SPB-1.9.apk" "Ploshchadka-SPB-1.9-Android.zip" \
+            --target "$GITHUB_SHA" --title "Площадка СПб 1.9" --notes-file release-notes.md
