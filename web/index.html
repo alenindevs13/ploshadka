@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101512"><title>Площадка — спорт рядом</title><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg"><link rel="stylesheet" href="./style.css"><script defer src="./app.js"></script></head>
+<body><header><a href="./" class="brand"><span class="logo" aria-hidden="true">↗</span>площадка<span class="dot">.</span></a><button id="locate" class="location"><span aria-hidden="true">◎</span> Моё местоположение</button></header>
+<main><section class="intro"><h1>Спорт <em>рядом.</em></h1><p>Найди уличную площадку и построй маршрут до тренировки.</p></section>
+<section class="workspace" aria-label="Поиск спортивных площадок">
+<aside><nav aria-label="Разделы"><button id="browse" aria-pressed="true">Обзор</button><button id="saved" aria-pressed="false">Избранное <span id="count">0</span></button></nav>
+<div class="filters" aria-label="Тип площадки"><button data-type="all" aria-pressed="true">Все</button><button data-type="fitness" aria-pressed="false">Воркаут</button><button data-type="court" aria-pressed="false">Игровые</button></div>
+<div class="catalog-tools"><button id="nearby" aria-pressed="false">Рядом со мной</button><button id="all-places">Все площадки</button></div>
+<div class="list-head"><h2 id="list-title">Площадки на карте</h2><p id="status" role="status"></p></div><div id="list"></div></aside>
+<section class="map-panel" aria-label="Яндекс Карты">
+<div class="map-tools" aria-label="Выбрать район для поиска">
+<button data-pan="west" aria-label="Район западнее">←</button><button data-pan="north" aria-label="Район севернее">↑</button><button data-pan="south" aria-label="Район южнее">↓</button><button data-pan="east" aria-label="Район восточнее">→</button><button id="scan">Искать в районе</button>
+</div><iframe id="map" title="Яндекс Карты" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+<div id="map-legend" class="map-legend" hidden><span>🔵 Вы</span><span>🔴 Площадки из списка</span></div></section>
+</section></main>
+<dialog id="details"><div class="dialog-inner"><button id="close" aria-label="Закрыть">×</button><div id="detail-body"></div></div></dialog></body></html>
